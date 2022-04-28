@@ -1,5 +1,7 @@
 import json
+
 from scripts.abc_algo import *
+from scripts.test_functions import *
 
 D = 3  # dimensions
 SN = 30  # population size

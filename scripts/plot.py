@@ -1,15 +1,16 @@
 import json
+from typing import List
+
 from matplotlib import pyplot as plt
 from glob import glob
-
 
 problems = {
     "Sphere",
     "Rosenbrock",
     "Rastrigin"}
 
-l = glob('../export/*.json')
-l.sort()
+files_list = glob('../export/*.json')
+files_list.sort()
 
 with open('../export/abc.json') as js:
     abc = json.load(js)
@@ -17,18 +18,18 @@ lim = 10
 for prob in problems:
 
     algorithms = {
-        # "ParticleSwarmAlgorithm": [],
-        # "BacterialForagingOptimization": [],
+        "ParticleSwarmAlgorithm": [],
+        "BacterialForagingOptimization": [],
         "DifferentialEvolution": [],
         # "ArtificialBeeColonyAlgorithm": [],
         # "SimulatedAnnealing": [],
         "CuckooSearch": []
     }
 
-    for i, li in enumerate(l):
-        if i==lim:
+    for i, file in enumerate(files_list):
+        if i == lim:
             break
-        with open(li) as js:
+        with open(file) as js:
             d = json.load(js)
         for algo in algorithms.keys():
             obj = []
@@ -39,12 +40,13 @@ for prob in problems:
 
     with open(str(prob) + '_all.json', 'w') as js:
         json.dump(algorithms, js)
-    itr = [i * 500 for i in range(1, lim+1)]
+    itr = [i * 500 for i in range(1, lim + 1)]
+
     for algo in algorithms.keys():
         plt.plot(itr, algorithms[algo], label=algo)
 
-    itr = range(500,lim*500)
-    plt.plot(itr,abc[prob][500:lim*500],label='ArtificialBeeColonyAlgorithm')
+    itr = range(500, lim * 500)
+    plt.plot(itr, abc[prob][500:lim * 500], label='ArtificialBeeColonyAlgorithm')
 
     plt.xlabel('# function evaluations')
     plt.ylabel('best fitness')
